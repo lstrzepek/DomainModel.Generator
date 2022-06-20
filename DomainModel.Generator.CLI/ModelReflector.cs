@@ -4,15 +4,67 @@ using System.Collections;
 using DomainModel.Generator.Mermaid;
 namespace DomainModel.Generator.CLI;
 
+public class Node
+{
+    public Node(string name)
+    {
+        Name = name;
+    }
+
+    public string Name { get; }
+    public void AddPublicAttribute(PropertyInfo property)
+    {
+
+    }
+}
+public class Graph
+{
+    List<Node> nodes = new();
+    public Node[] Nodes => nodes.ToArray();
+    public Node AddNode(Type type)
+    {
+        var node = new Node(type.Name);
+        nodes.Add(node);
+        return node;
+    }
+}
 public class ModelReflector
 {
     private readonly ClassDiagramGenerator classDiagramGenerator;
+    private readonly Options _options;
 
     public ModelReflector(ClassDiagramGenerator classDiagramGenerator)
     {
         this.classDiagramGenerator = classDiagramGenerator;
     }
-    
+    public ModelReflector(Options options)
+    {
+        this._options = options;
+    }
+    public Graph ReflectTypes(Type[] types)
+    {
+        var graph = new Graph();
+        foreach (var type in types)
+        {
+            if (!_options.ShouldBe(type.Namespace))
+                continue;
+
+            var node = graph.AddNode(type);
+            try
+            {
+                foreach (var property in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
+                {
+                    node.AddPublicAttribute(property);
+                }
+            }
+            catch (FileNotFoundException ex)
+            {
+                Console.WriteLine("Error when reflecting ${type.Name}: " + ex.Message);
+            }
+
+        }
+        return graph;
+    }
     public string Reflect(Type[] types, Options options)
     {
         foreach (var type in types)
