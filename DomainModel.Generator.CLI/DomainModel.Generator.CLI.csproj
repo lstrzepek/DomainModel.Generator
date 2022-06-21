@@ -17,6 +17,7 @@
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>dotnet-model</ToolCommandName>
     <PackageOutputPath>./nupkg</PackageOutputPath>
+    <VersionPrefix>0.0.1</VersionPrefix>
   </PropertyGroup>
 
 </Project>
