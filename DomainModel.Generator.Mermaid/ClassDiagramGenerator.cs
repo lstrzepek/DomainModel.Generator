@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Collections.Generic;
-namespace DomainModel.Generator.Mermaid;
+﻿namespace DomainModel.Generator.Mermaid;
 
 public interface IClass
 {
@@ -37,7 +35,7 @@ public class ClassDiagramGenerator
     }
     private void AddRelation(IClass classA, IClass classB, string symbol, string? label = default)
     {
-        HashSet<string> key = new (new[] { classA.Name, classB.Name });
+        HashSet<string> key = new(new[] { classA.Name, classB.Name });
         if (!relations.ContainsKey(key))
             relations.Add(key, new Relation(
                 classA.Name,
@@ -101,7 +99,7 @@ public class ClassDiagramGenerator
             IsEmpty = false;
             diagramBuilder.AppendLine(string.IsNullOrEmpty(type) ?
             $"\t{Name} : {visibility}{name}" :
-            $"\t{Name} : {visibility}{type} {name}");
+            $"\t{Name} : {visibility}{type.Replace('<', '~').Replace('>', '~')} {name}");
         }
         public void AddPublicAttribute(string name, string? type)
             => AddAttribute("+", name, type);
