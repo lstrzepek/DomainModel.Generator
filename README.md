@@ -1,4 +1,7 @@
 # DomainModel.Generator
+  
+[![CI](https://github.com/lstrzepek/DomainModel.Generator/actions/workflows/ci.yml/badge.svg)](https://github.com/lstrzepek/DomainModel.Generator/actions/workflows/ci.yml)
+
 Domain model is a tool to analyze your model (.Net dll) and generate up to date diagram which can be embedded into your documentation.
 
 ```
@@ -27,5 +30,4 @@ Options:
   ```
   dotnet tool install dotnet-model --global
   ```
-  
   
