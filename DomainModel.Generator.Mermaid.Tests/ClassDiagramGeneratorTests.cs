@@ -38,6 +38,22 @@ public class ClassDiagramGeneratorTests
     }
 
     [Fact]
+    public void AddClass_WithAttributeWithTypeWithSpecialCharacters_ShouldDisplayClassDetails()
+    {
+        var sut = new ClassDiagramGenerator();
+        var @class = sut.AddClass("BankAccount");
+        @class.AddPublicAttribute("owner", "List<string>");
+        var diagram = sut.Generate();
+        diagram.Should().Be(new[]{
+            "classDiagram",
+            "\tclass BankAccount",
+            "\tBankAccount : +List~string~ owner"
+        }.ToDiagram());
+    }
+
+
+
+    [Fact]
     public void TwoEmptyClasses_WithRelation_ShouldDisplayRelationOnly()
     {
         var sut = new ClassDiagramGenerator();
