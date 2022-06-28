@@ -14,10 +14,10 @@ public class Options
     public GenerateOptions GenerateOptions { get; }
     public string[]? Namespaces { get; }
 
-    public bool ShouldBe(string? @namespace) => 
-            Namespaces is null || 
+    public bool ShouldBe(string? @namespace) =>
+            Namespaces is null ||
             Namespaces.Length == 0 ||
-            Namespaces.Contains(@namespace);
+            Namespaces.Any(ns => @namespace is not null && @namespace.StartsWith(ns + "."));
 }
 public class GenerateOptions
 {

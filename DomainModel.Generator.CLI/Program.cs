@@ -1,6 +1,6 @@
-﻿using System.Linq;
-using DocoptNet;
+﻿using DocoptNet;
 using DomainModel.Generator.CLI;
+using DomainModel.Generator.Mermaid;
 
 const string usage =
 @"Domain model it a tool to analyze your model and generate upd to date diagram which can be embedded into your documentation.
@@ -39,13 +39,32 @@ static int Run(IDictionary<string, ArgValue> arguments)
         optionValidator.AssertOptions(options);
 
         var modelLoader = new ModelLoader(
-            new ModelReflector(
-                new DomainModel.Generator.Mermaid.ClassDiagramGenerator()));
-        var diagram = modelLoader.LoadModule(options);
+            new ModelReflector(options));
+        var graph = modelLoader.LoadModule(options);
+        var diagram = GenerateDiagram(graph);
         File.WriteAllText(options.GenerateOptions.OutputPath, diagram);
         return 0;
     }
     return 1;
+}
+static string GenerateDiagram(Graph graph)
+{
+    var diagramGenerator = new DomainModel.Generator.Mermaid.ClassDiagramGenerator();
+    var map = new Dictionary<Node, IClass>();
+    foreach (var node in graph.Nodes)
+    {
+        var @class = diagramGenerator.AddClass(node.Name);
+        map.Add(node, @class);
+        foreach (var attribute in node.Attributes)
+        {
+            @class.AddPublicAttribute(attribute.name, attribute.type);
+        }
+    }
+    foreach (var edge in graph.Edges)
+    {
+        diagramGenerator.LinkWithAssociation(map[edge.From], map[edge.To]);
+    }
+    return diagramGenerator.Generate();
 }
 return Docopt.CreateParser(usage)
              .WithVersion("Domain model v0.1")
