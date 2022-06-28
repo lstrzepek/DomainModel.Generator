@@ -99,7 +99,7 @@ public class ClassDiagramGenerator
             IsEmpty = false;
             diagramBuilder.AppendLine(string.IsNullOrEmpty(type) ?
             $"\t{Name} : {visibility}{name}" :
-            $"\t{Name} : {visibility}{type.Replace('<', '~').Replace('>', '~')} {name}");
+            $"\t{Name} : {visibility}{type.Replace('>', '~')} {name}");
         }
         public void AddPublicAttribute(string name, string? type)
             => AddAttribute("+", name, type);
