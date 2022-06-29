@@ -25,12 +25,16 @@ jobs:
         
     - name: 'Restore dependencies'
       run: dotnet restore ${{ env.PROJECT_PATH }}
+      
+    - name: 'Get version from tag'
+      id: get_version
+      uses: jannemattila/get-version-from-tag@v1
     
     - name: 'Build project'
       run: dotnet build ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release
       
     - name: 'Pack project'
-      run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release -p:PackageVersion=${{ github.ref_name }} --output ${{ env.PACKAGE_OUTPUT_DIR }}
+      run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release -p:PackageVersion=${{ steps.get_version.outputs.version }} --output ${{ env.PACKAGE_OUTPUT_DIR }}
       
     - name: 'Push package'
       run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_DIR }}\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s ${{ NUGET_SOURCE_URL }}
