@@ -1,0 +1,40 @@
+name: "Publish package"
+
+on:
+  release:
+    types:
+    - published
+    
+env:
+  PROJECT_PATH: 'DomainModel.Generator.CLI/DomainModel.Generator.CLI.csproj'
+  PACKAGE_OUTPUT_DIR: ${{ github.workspace }}\output
+  NUGET_SOURCE_URL: 'https://api.nuget.org/v3/index.json'
+  
+jobs:
+  publish:
+    name: 'Publish to NuGet'
+    runs-on: 'ubuntu-latest'
+    steps:
+    - name: 'Checkout'
+      uses: actions/checkout@v2
+      
+    - name: 'Install dotnet'
+      uses: actions/setup-dotnet@v1
+      with:
+        dotnet-version: '6.0.x'
+        
+    - name: 'Restore dependencies'
+      run: dotnet restore ${{ env.PROJECT_PATH }}
+      
+    - name: 'Get version from tag'
+      id: get_version
+      uses: jannemattila/get-version-from-tag@v1
+    
+    - name: 'Build project'
+      run: dotnet build ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release
+      
+    - name: 'Pack project'
+      run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release -p:PackageVersion=${{ steps.get_version.outputs.version }} --output ${{ env.PACKAGE_OUTPUT_DIR }}
+      
+    - name: 'Push package'
+      run: dotnet nuget push ${{ env.PACKAGE_OUTPUT_DIR }}\*.nupkg -k ${{ secrets.NUGET_API_KEY }} -s ${{ NUGET_SOURCE_URL }}
