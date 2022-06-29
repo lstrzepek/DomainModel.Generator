@@ -10,14 +10,20 @@
   </ItemGroup>
 
   <PropertyGroup>
+    <PackageId>DomainModel.Generator</PackageId>
+    <Authors>Łukasz Strzępek</Authors>
+    <Description>Domain model is a tool to analyze your model (.Net dll) and generate up to date diagram which can be embedded into your documentation.</Description>
+
     <OutputType>Exe</OutputType>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
     <PackAsTool>true</PackAsTool>
     <ToolCommandName>dotnet-model</ToolCommandName>
-    <PackageOutputPath>./nupkg</PackageOutputPath>
     <VersionPrefix>0.0.1</VersionPrefix>
+    <PackageLicenseExpression>MIT</PackageLicenseExpression>
+    <PackageTags>dotnet tool mermaid markdown uml generate class diagram code dll scan reverse engineering</PackageTags>
+    <RepositoryUrl>https://github.com/lstrzepek/DomainModel.Generator.git</RepositoryUrl>
   </PropertyGroup>
 
 </Project>
