@@ -1,20 +1,20 @@
 public class Node
 {
-    private readonly Dictionary<string, (string TypeName, string TypeFullName)> attributes = new();
+    private readonly Dictionary<string, string> attributes = new();
 
     public Node(Type type)
     {
         Type = type;
     }
-    public string this[string name] => attributes[name].TypeName;
+    public string this[string name] => attributes[name];
     public string Name => Type.Name;
-    public (string name, string type)[] Attributes => attributes.Select(a => (a.Key, a.Value.TypeName)).ToArray();
+    public (string name, string type)[] Attributes => attributes.Select(a => (a.Key, a.Value)).ToArray();
 
     public Type Type { get; }
 
     public void AddPublicAttribute(string name, Type type)
     {
-        attributes.Add(name, (TypeName: type.FormatTypeName(), TypeFullName: type.FullName));
+        attributes.Add(name, type.FormatTypeName());
     }
 }
 public class Edge
@@ -36,6 +36,9 @@ public class Graph
     public Edge[] Edges => edges.ToArray();
     public Node AddNode(Type type)
     {
+        if (type.FullName is null)
+            throw new ArgumentNullException(nameof(type.FullName));
+
         if (nodes.ContainsKey(type.FullName))
             return nodes[type.FullName];
 
@@ -44,9 +47,21 @@ public class Graph
         return node;
     }
 
-    public bool TryGetNodeFor(Type type, out Node node)
+    public bool TryGetNodeFor(Type type, out Node? node)
     {
-        return nodes.TryGetValue(type.FullName, out node);
+        var typeFullName = type.FullName;
+        if (string.IsNullOrWhiteSpace(typeFullName))
+        {
+            node = null;
+            return false;
+        }
+        return nodes.TryGetValue(typeFullName, out node);
+    }
+
+    public Node[] FindNodes(params Type[] types)
+    {
+        return types.Where(t => t.FullName is not null && nodes.ContainsKey(t.FullName))
+                    .Select(t => nodes[t.FullName!]).ToArray();
     }
 
     internal Edge AddEdge(Node from, Node to)
