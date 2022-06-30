@@ -31,7 +31,7 @@ jobs:
       uses: jannemattila/get-version-from-tag@v1
     
     - name: 'Build project'
-      run: dotnet build ${{ env.PROJECT_PATH }} --no-restore --configuration Release
+      run: dotnet build ${{ env.PROJECT_PATH }} --no-restore --configuration Release -p:Version=${{ steps.get_version.outputs.version }}
       
     - name: 'Pack project'
       run: dotnet pack ${{ env.PROJECT_PATH }} --no-restore --no-build --configuration Release -p:PackageVersion=${{ steps.get_version.outputs.version }} --output ${{ env.PACKAGE_OUTPUT_DIR }}
