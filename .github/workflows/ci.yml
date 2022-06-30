@@ -2,6 +2,8 @@ name: CI
 
 on:
   push:
+    branches-ignore:
+    - main
 
 jobs:
   build:
@@ -19,9 +21,4 @@ jobs:
     - name: Build
       run: dotnet build --no-restore
     - name: Test
-      run: dotnet test --no-build --verbosity normal -l:trx;LogFileName=TestResults.trx
-    - name: Upload a Build Artifact
-      uses: actions/upload-artifact@v3.1.0
-      with:
-        name: test-results
-        path: "**/*.trx"
+      run: dotnet test --no-restore --no-build
