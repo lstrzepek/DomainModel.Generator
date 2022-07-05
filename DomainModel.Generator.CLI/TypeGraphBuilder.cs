@@ -24,7 +24,7 @@ public class TypeGraphBuilder
     public void AddPublicAttribute(Node node, string name, Type type)
     {
         node.AddPublicAttribute(name, type);
-        if (TryGetConnectedNode(type, out var otherNode))
+        foreach (var otherNode in TryGetConnectedNodes(type))
         {
             graph.AddEdge(node, otherNode);
         }
@@ -32,9 +32,9 @@ public class TypeGraphBuilder
 
     public Graph Build() => this.graph;
 
-    private bool TryGetConnectedNode(Type type, out Node node)
+    private Node[] TryGetConnectedNodes(Type type)
     {
-        var nodeName = type.GetClassType();
-        return graph.TryGetNodeFor(nodeName, out node);
+        var types = type.GetContainingTypes();
+        return graph.FindNodes(types);
     }
 }

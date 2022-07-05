@@ -25,28 +25,28 @@ static int ShowVersion(string version) { Console.WriteLine(version); return 0; }
 static int OnError(string usage) { Console.Error.WriteLine(usage); return 1; }
 static int Run(IDictionary<string, ArgValue> arguments)
 {
-    if (arguments["generate"].IsTrue)
-    {
-        var options = new Options(
-            generateOptions: new GenerateOptions(
-                outputPath: (string)arguments["--output"],
-                diagramType: (string)arguments["--diagram"],
-                outputFormat: (string)arguments["--format"]),
-            modulePath: (string)arguments["--module"],
-            namespaces: ((StringList)arguments["--namespace"]).ToArray());
+    if (!arguments["generate"].IsTrue)
+        return 1;
 
-        var optionValidator = new OptionsValidator();
-        optionValidator.AssertOptions(options);
+    var options = CreateOptionsFrom(arguments);
+    new OptionsValidator().AssertOptions(options);
 
-        var modelLoader = new ModelLoader(
-            new ModelReflector(options));
-        var graph = modelLoader.LoadModule(options);
-        var diagram = GenerateDiagram(graph);
-        File.WriteAllText(options.GenerateOptions.OutputPath, diagram);
-        return 0;
-    }
-    return 1;
+    var modelLoader = new ModelLoader(
+        new ModelReflector(options));
+    var graph = modelLoader.LoadModule(options);
+    var diagram = GenerateDiagram(graph);
+    File.WriteAllText(options.GenerateOptions.OutputPath, diagram);
+    return 0;
 }
+
+static Options CreateOptionsFrom(IDictionary<string, ArgValue> arguments) => new Options(
+        generateOptions: new GenerateOptions(
+            outputPath: (string)arguments["--output"],
+            diagramType: (string)arguments["--diagram"],
+            outputFormat: (string)arguments["--format"]),
+        modulePath: (string)arguments["--module"],
+        namespaces: ((StringList)arguments["--namespace"]).ToArray());
+
 static string GenerateDiagram(Graph graph)
 {
     var diagramGenerator = new DomainModel.Generator.Mermaid.ClassDiagramGenerator();
@@ -66,12 +66,14 @@ static string GenerateDiagram(Graph graph)
     }
     return diagramGenerator.Generate();
 }
+static Version? GetVersion()
+{
+    return typeof(Options).Assembly.GetName().Version;
+}
 return Docopt.CreateParser(usage)
-             .WithVersion("Domain model v0.1")
+             .WithVersion("Domain model v" + GetVersion())
              .Parse(args)
-             .Match(Run,
-                    result => ShowHelp(result.Help),
-                    result => ShowVersion(result.Version),
-                    result => OnError(result.Usage));
-
-
+             .Match<int>(Run,
+                    (Func<IHelpResult, int>)(result => ShowHelp(result.Help)),
+                    (Func<IVersionResult, int>)(result => ShowVersion(result.Version)),
+                    (Func<IInputErrorResult, int>)(result => OnError(result.Usage)));

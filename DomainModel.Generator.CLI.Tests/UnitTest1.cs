@@ -88,7 +88,7 @@ public class ModelReflectorTests
     [InlineData(new[] { "yyy", "zzz" }, "xxx.yyy", false)]
     [InlineData(new[] { "xxx" }, "xxyy", false)]
     [InlineData(new[] { "xxx" }, null, false)]
-    public void Options_WithNamesapces(string[] namespaces, string actualNamespace, bool expectedResult)
+    public void Options_WithNamespaces(string[] namespaces, string actualNamespace, bool expectedResult)
     {
         var o = new Options(modulePath: "x", generateOptions: null, namespaces: namespaces);
         o.ShouldBe(actualNamespace).Should().Be(expectedResult);
@@ -99,9 +99,10 @@ public class ModelReflectorTests
     {
         var node = new Node(typeof(TestClass3));
         node.AddPublicAttribute("generic", typeof(List<int>));
+        node.AddPublicAttribute("openGeneric", typeof(IDictionary<,>));
         node.AddPublicAttribute("nullable", typeof(int?));
         node["generic"].Should().Be("List<int>");
-
+        node["openGeneric"].Should().Be("IDictionary<TKey,TValue>");
         node["nullable"].Should().Be("int?");
     }
 
