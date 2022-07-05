@@ -17,7 +17,7 @@ public class Options
     public bool ShouldBe(string? @namespace) =>
             Namespaces is null ||
             Namespaces.Length == 0 ||
-            Namespaces.Any(ns => @namespace is not null && @namespace.StartsWith(ns + "."));
+            Namespaces.Any(ns => @namespace is not null && (@namespace == ns || @namespace.StartsWith(ns + ".")));
 }
 public class GenerateOptions
 {
