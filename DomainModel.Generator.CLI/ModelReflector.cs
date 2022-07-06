@@ -13,10 +13,7 @@ public class ModelReflector
         var graphBuilder = new TypeGraphBuilder();
         foreach (var type in types)
         {
-            if (!type.IsPublic || type.IsAutoClass)
-                continue;
-
-            if (!options.ShouldReflect(type.Namespace))
+            if (!options.ShouldReflect(type))
                 continue;
 
             var node = graphBuilder.AddType(type);
