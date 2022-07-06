@@ -7,17 +7,20 @@ public class Options
     {
         ModulePath = modulePath;
         GenerateOptions = generateOptions;
-        Namespaces = namespaces;
+        InludeNamespaces = namespaces;
     }
 
     public string ModulePath { get; }
     public GenerateOptions GenerateOptions { get; }
-    public string[]? Namespaces { get; }
+    public string[]? InludeNamespaces { get; }
+    public string[]? ExcludeNamespaces { get; }
+    public string[]? IncludeTypes { get; }
+    public string[]? ExcludeTypes { get; }
 
-    public bool ShouldBe(string? @namespace) =>
-            Namespaces is null ||
-            Namespaces.Length == 0 ||
-            Namespaces.Any(ns => @namespace is not null && (@namespace == ns || @namespace.StartsWith(ns + ".")));
+    public bool ShouldReflect(string? @namespace) =>
+            InludeNamespaces is null ||
+            InludeNamespaces.Length == 0 ||
+            InludeNamespaces.Any(ns => @namespace is not null && (@namespace == ns || @namespace.StartsWith(ns + ".")));
 }
 public class GenerateOptions
 {

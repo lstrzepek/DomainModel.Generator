@@ -18,6 +18,6 @@ public class OptionsTest
     public void Options_WithNamespaces(string[] namespaces, string actualNamespace, bool expectedResult)
     {
         var o = new Options(modulePath: "x", generateOptions: null, namespaces: namespaces);
-        o.ShouldBe(actualNamespace).Should().Be(expectedResult);
+        o.ShouldReflect(actualNamespace).Should().Be(expectedResult);
     }
 }

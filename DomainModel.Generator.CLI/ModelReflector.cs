@@ -16,7 +16,7 @@ public class ModelReflector
             if (!type.IsPublic || type.IsAutoClass)
                 continue;
 
-            if (!options.ShouldBe(type.Namespace))
+            if (!options.ShouldReflect(type.Namespace))
                 continue;
 
             var node = graphBuilder.AddType(type);
