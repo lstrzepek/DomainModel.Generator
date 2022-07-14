@@ -119,13 +119,12 @@ public class NestingClass
     {
 
     }
-    public NestedClass NestedProperty { get; set; }
+    public NestedClass NestedProperty { get; set; } = new();
 }
 
 public class TestClass3
 {
-    public List<int> Count { get; set; }
-
+    public List<int> Count { get; set; } = new();
 }
 
 public enum PublicEnum
@@ -137,7 +136,7 @@ public enum PublicEnum
 
 public class BaseClass
 {
-    public virtual IReadOnlyCollection<Func<bool, int>> BaseProperty { get; }
+    public virtual IReadOnlyCollection<Func<bool, int>> BaseProperty { get; } = Array.Empty<Func<bool, int>>();
 }
 
 public class DerivedBaseClass : BaseClass

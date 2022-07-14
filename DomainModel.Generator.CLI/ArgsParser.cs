@@ -16,7 +16,7 @@ Options:
   --version                         Show version.
   -m=<md> --module=<md>             **Required** Module where to look for types (eg: MyCompany.Domain.dll).
   -n=<ns>... --namespace=<ns>...    Only types in provided namespaces will be visible on diagram as objects.
-  -t=<type>... | --type=<type>...   Types to include even if not defined in provided namespaces.
+  -t=<type>... --type=<type>...   Types to include even if not defined in provided namespaces.
   --ignore-namespace=<ign>...       Namespaces to ignore.
   --ignore-type=<igt>               Type to ignore.
   -o=<out> --output=<out>           **Required** File where to put markdown with diagram (will be overridden!).
@@ -32,7 +32,10 @@ Options:
                 diagramType: (string)arguments["--diagram"],
                 outputFormat: (string)arguments["--format"]),
             modulePath: (string)arguments["--module"],
-            includeNamespaces: ((StringList)arguments["--namespace"]).ToArray());
+            includeNamespaces: ((StringList)arguments["--namespace"]).ToArray(),
+            includeTypes: ((StringList)arguments["--type"]).ToArray(),
+            excludeNamespaces: ((StringList)arguments["--ignore-namespace"]).ToArray(),
+            excludeTypes: ((StringList)arguments["--ignore-type"]).ToArray());
 
     static Version? GetVersion()
     {
@@ -49,7 +52,7 @@ Options:
         onError = onError ?? (_ => 1);
         showHelp = showHelp ?? (_ => 0);
         showVersion = showVersion ?? (_ => 0);
-        
+
         return Docopt.CreateParser(Usage)
                      .WithVersion("Domain model v" + GetVersion())
                      .Parse(args)

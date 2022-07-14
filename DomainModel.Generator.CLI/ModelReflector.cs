@@ -21,15 +21,32 @@ public class ModelReflector
             {
                 foreach (var property in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
                 {
-                    graphBuilder.AddPublicAttribute(node, property.Name, property.PropertyType);
+                    try
+                    {
+                        graphBuilder.AddPublicAttribute(node, property.Name, property.PropertyType);
+                    }
+                    catch (FileNotFoundException ex)
+                    {
+                        Console.Error.WriteLine($"Error when reflecting {type.Name}.{property.Name}.");
+                        PrintException(ex);
+                        graphBuilder.AddPublicAttribute(node, property.Name, typeof(object));
+                    }
                 }
             }
             catch (FileNotFoundException ex)
             {
-                Console.WriteLine("Error when reflecting ${type.Name}: " + ex.Message);
+                Console.Error.WriteLine($"Error when reflecting {type.Name}: " + ex.Message);
+                PrintException(ex);
             }
 
         }
         return graphBuilder.Build();
+    }
+
+    private static void PrintException(FileNotFoundException ex)
+    {
+        Console.Error.Write("Please look on below exception and provide missing dependency into directory with your model. ");
+        Console.Error.WriteLine("Try using 'dotnet publish' to be sure that external dependencies will be copied to output directory.");
+        Console.Error.WriteLine(ex.Message);
     }
 }
