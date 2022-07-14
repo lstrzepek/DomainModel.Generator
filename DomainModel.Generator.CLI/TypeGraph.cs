@@ -14,6 +14,11 @@ public class Node
 
     public void AddPublicAttribute(string name, Type type)
     {
+        if (attributes.ContainsKey(name))
+        {
+            attributes[name] = type.FormatTypeName();
+            return;
+        }
         attributes.Add(name, type.FormatTypeName());
     }
 }

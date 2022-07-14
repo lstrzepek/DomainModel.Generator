@@ -2,23 +2,24 @@ public static class TypeExtensions
 {
     // https://stackoverflow.com/a/56352691
     // This is the set of types from the C# keyword list.
-    static Dictionary<Type, string> _typeAlias = new() {
-      { typeof(bool), "bool" },
-      { typeof(byte), "byte" },
-      { typeof(char), "char" },
-      { typeof(decimal), "decimal" },
-      { typeof(double), "double" },
-      { typeof(float), "float" },
-      { typeof(int), "int" },
-      { typeof(long), "long" },
-      { typeof(object), "object" },
-      { typeof(sbyte), "sbyte" },
-      { typeof(short), "short" },
-      { typeof(string), "string" },
-      { typeof(uint), "uint" },
-      { typeof(ulong), "ulong" },
-      // Yes, this is an odd one.  Technically it's a type though.
-      { typeof(void), "void" }
+    static Dictionary<Type, string> _typeAlias = new()
+    {
+        { typeof(bool), "bool" },
+        { typeof(byte), "byte" },
+        { typeof(char), "char" },
+        { typeof(decimal), "decimal" },
+        { typeof(double), "double" },
+        { typeof(float), "float" },
+        { typeof(int), "int" },
+        { typeof(long), "long" },
+        { typeof(object), "object" },
+        { typeof(sbyte), "sbyte" },
+        { typeof(short), "short" },
+        { typeof(string), "string" },
+        { typeof(uint), "uint" },
+        { typeof(ulong), "ulong" },
+        // Yes, this is an odd one.  Technically it's a type though.
+        { typeof(void), "void" }
     };
 
     static Type UnknownType = typeof(object);

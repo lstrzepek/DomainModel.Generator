@@ -13,12 +13,13 @@ public class ModelLoader
     public Graph LoadModule(Options options)
     {
         var runtimeDirectory = RuntimeEnvironment.GetRuntimeDirectory();
-        Console.WriteLine($"Loading core assemblies from {runtimeDirectory}");
+        Console.WriteLine($"Loading core assemblies from: {Environment.NewLine}{runtimeDirectory}");
         string[] runtimeAssemblies = Directory.GetFiles(runtimeDirectory, "*.dll");
+        Console.WriteLine();
 
         var moduleAssemblyPath = Path.GetFullPath(options.ModulePath);
         string[] modelAssemblies = Directory.GetFiles(Path.GetDirectoryName(moduleAssemblyPath)!, "*.dll");
-        Console.WriteLine($"Following libraries will be scanned: \n{string.Join(Environment.NewLine, modelAssemblies)}");
+        Console.WriteLine($"Following libraries will be scanned: {Environment.NewLine}{string.Join(Environment.NewLine, modelAssemblies)}{Environment.NewLine}");
 
         var paths = runtimeAssemblies.Union(modelAssemblies);
         var resolver = new PathAssemblyResolver(paths);
