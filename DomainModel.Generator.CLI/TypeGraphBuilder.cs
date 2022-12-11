@@ -2,39 +2,39 @@
 public class TypeGraphBuilder
 {
     private readonly Graph graph;
+    private readonly INodeConnectionStrategy[] conn;
 
-    public TypeGraphBuilder()
+    public TypeGraphBuilder(INodeConnectionStrategy[] conn)
     {
         this.graph = new Graph();
+        this.conn = conn;
     }
 
-    public Node AddType(Type type)
+    public Node AddNode(Node node)
     {
-        var newNode = graph.AddNode(type);
-        foreach (var node in graph.Nodes)
-        {
-            if (node.Attributes.Any(a => a.type == type.Name))
-            {
-                graph.AddEdge(node, newNode);
-            }
-        }
+        var newNode = graph.AddNode(node);
+        ConnectNodes(newNode);
         return newNode;
-    }
-
-    public void AddPublicAttribute(Node node, string name, Type type)
-    {
-        node.AddPublicAttribute(name, type);
-        foreach (var otherNode in TryGetConnectedNodes(type))
-        {
-            graph.AddEdge(node, otherNode);
-        }
     }
 
     public Graph Build() => this.graph;
 
-    private Node[] TryGetConnectedNodes(Type type)
+    private void ConnectNodes(Node newNode)
     {
-        var types = type.GetContainingTypes();
-        return graph.FindNodes(types);
+        foreach (var node in graph.Nodes)
+        {
+            if (newNode == node)
+                continue;
+
+            if (conn.Any(c => c.AreConnected(node, newNode)))
+            {
+                graph.AddEdge(node, newNode);
+            }
+
+            if (conn.Any(c => c.AreConnected(newNode, node)))
+            {
+                graph.AddEdge(newNode, node);
+            }
+        }
     }
 }

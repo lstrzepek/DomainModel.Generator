@@ -10,28 +10,32 @@ public class ModelReflector
     }
     public Graph ReflectTypes(Type[] types)
     {
-        var graphBuilder = new TypeGraphBuilder();
+        var graphBuilder = new TypeGraphBuilder(new INodeConnectionStrategy[] {
+            new ByIdNodeConnectionStrategy(),
+            new ByTypeNodeConnectionStrategy()
+            });
         foreach (var type in types)
         {
             if (!options.ShouldReflect(type))
                 continue;
 
-            var node = graphBuilder.AddType(type);
+            var node = new Node(type);
             try
             {
                 foreach (var property in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
                 {
                     try
                     {
-                        graphBuilder.AddPublicAttribute(node, property.Name, property.PropertyType);
+                        node.AddPublicAttribute(property.Name, property.PropertyType);
                     }
                     catch (FileNotFoundException ex)
                     {
                         Console.Error.WriteLine($"Error when reflecting {type.Name}.{property.Name}.");
                         PrintException(ex);
-                        graphBuilder.AddPublicAttribute(node, property.Name, typeof(object));
+                        node.AddPublicAttribute(property.Name, typeof(object));
                     }
                 }
+                graphBuilder.AddNode(node);
             }
             catch (FileNotFoundException ex)
             {

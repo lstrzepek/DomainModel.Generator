@@ -9,7 +9,6 @@ public class Node
     public string this[string name] => attributes[name];
     public string Name => Type.Name;
     public (string name, string type)[] Attributes => attributes.Select(a => (a.Key, a.Value)).ToArray();
-
     public Type Type { get; }
 
     public void AddPublicAttribute(string name, Type type)
@@ -22,6 +21,7 @@ public class Node
         attributes.Add(name, type.FormatTypeName());
     }
 }
+
 public class Edge
 {
     public Edge(Node from, Node to)
@@ -33,6 +33,7 @@ public class Edge
     public Node From { get; }
     public Node To { get; }
 }
+
 public class Graph
 {
     private readonly Dictionary<string, Node> nodes = new();
@@ -48,6 +49,19 @@ public class Graph
             return nodes[type.FullName];
 
         var node = new Node(type);
+        nodes.Add(type.FullName, node);
+        return node;
+    }
+
+    public Node AddNode(Node node)
+    {
+        var type = node.Type;
+        if (type.FullName is null)
+            throw new ArgumentNullException(nameof(type.FullName));
+
+        if (nodes.ContainsKey(type.FullName))
+            return nodes[type.FullName];
+
         nodes.Add(type.FullName, node);
         return node;
     }

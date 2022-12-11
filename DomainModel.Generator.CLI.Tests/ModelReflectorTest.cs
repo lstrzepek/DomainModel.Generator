@@ -17,8 +17,8 @@ public class ModelReflectorTest
     [Fact]
     public void AnonymousType_ShouldBeSkipped()
     {
-        var reflectedAnonymousType = new { A = "A", B = 3 };
         var sut = CreateSut();
+        var reflectedAnonymousType = new { A = "A", B = 3 };
         var graph = sut.ReflectTypes(types: new[] { reflectedAnonymousType.GetType() });
         graph.Nodes.Length.Should().Be(0);
     }
@@ -59,13 +59,13 @@ public class ModelReflectorTest
     }
 
     [Fact]
-    public void TwoClasses_WithReference_ShouldHaveRelation()
+    public void TwoClasses_WithDirectReference_ShouldHaveRelation()
     {
         var sut = CreateSut();
-        var graph = sut.ReflectTypes(new[] { typeof(PublicClass), typeof(ReferenceToPublicClass) });
+        var graph = sut.ReflectTypes(new[] { typeof(PublicClass), typeof(DirectReferenceToPublicClass) });
         graph.Nodes.Length.Should().Be(2);
         graph.TryGetNodeFor(typeof(PublicClass), out var node1).Should().BeTrue();
-        graph.TryGetNodeFor(typeof(ReferenceToPublicClass), out var node2).Should().BeTrue();
+        graph.TryGetNodeFor(typeof(DirectReferenceToPublicClass), out var node2).Should().BeTrue();
         graph.Edges.Length.Should().Be(1);
         var edge = graph.Edges[0];
         edge.From.Should().Be(node2);
@@ -73,13 +73,27 @@ public class ModelReflectorTest
     }
 
     [Fact]
-    public void TwoClasses_WithReferenceButInDifferentOrder_ShouldHaveRelation()
+    public void TwoClasses_WithDirectReferenceButInDifferentOrder_ShouldHaveRelation()
     {
         var sut = CreateSut();
-        var graph = sut.ReflectTypes(new[] { typeof(ReferenceToPublicClass), typeof(PublicClass) });
+        var graph = sut.ReflectTypes(new[] { typeof(DirectReferenceToPublicClass), typeof(PublicClass) });
         graph.Nodes.Length.Should().Be(2);
         graph.TryGetNodeFor(typeof(PublicClass), out var node1).Should().BeTrue();
-        graph.TryGetNodeFor(typeof(ReferenceToPublicClass), out var node2).Should().BeTrue();
+        graph.TryGetNodeFor(typeof(DirectReferenceToPublicClass), out var node2).Should().BeTrue();
+        graph.Edges.Length.Should().Be(1);
+        var edge = graph.Edges[0];
+        edge.From.Should().Be(node2);
+        edge.To.Should().Be(node1);
+    }
+
+    [Fact]
+    public void TwoClasses_WithIndirectReference_ShouldHaveRelation()
+    {
+        var sut = CreateSut();
+        var graph = sut.ReflectTypes(new[] { typeof(PublicClass), typeof(IndirectReferenceToPublicClass) });
+        graph.Nodes.Length.Should().Be(2);
+        graph.TryGetNodeFor(typeof(PublicClass), out var node1).Should().BeTrue();
+        graph.TryGetNodeFor(typeof(IndirectReferenceToPublicClass), out var node2).Should().BeTrue();
         graph.Edges.Length.Should().Be(1);
         var edge = graph.Edges[0];
         edge.From.Should().Be(node2);
@@ -108,9 +122,14 @@ public class PublicClass
     public int MyProperty { get; set; }
 }
 
-public class ReferenceToPublicClass
+public class DirectReferenceToPublicClass
 {
     public PublicClass TestClass1 { get; set; } = new();
+}
+
+public class IndirectReferenceToPublicClass
+{
+    public Guid PublicClassId { get; set; }
 }
 
 public class NestingClass
