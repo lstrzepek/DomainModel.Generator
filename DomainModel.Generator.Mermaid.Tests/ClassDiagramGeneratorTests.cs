@@ -51,8 +51,6 @@ public class ClassDiagramGeneratorTests
         }.ToDiagram());
     }
 
-
-
     [Fact]
     public void TwoEmptyClasses_WithRelation_ShouldDisplayRelationOnly()
     {
@@ -63,7 +61,7 @@ public class ClassDiagramGeneratorTests
         var diagram = sut.Generate();
         diagram.Should().Be(new[]{
             "classDiagram",
-            "ClassA <|-- ClassB"
+            "ClassA --|> ClassB"
         }.ToDiagram());
     }
 }

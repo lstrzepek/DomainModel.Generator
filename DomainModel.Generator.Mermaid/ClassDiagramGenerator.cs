@@ -33,33 +33,33 @@ public class ClassDiagramGenerator
         classes.TryGetValue(name, out var @class);
         return @class;
     }
-    private void AddRelation(IClass classA, IClass classB, string symbol, string? label = default)
+    private void AddRelation(IClass from, IClass to, string symbol, string? label = default)
     {
-        HashSet<string> key = new(new[] { classA.Name, classB.Name });
+        HashSet<string> key = new(new[] { from.Name, to.Name });
         if (!relations.ContainsKey(key))
             relations.Add(key, new Relation(
-                classA.Name,
-                classB.Name,
+                from.Name,
+                to.Name,
                 symbol,
                 label
             ));
     }
-    public void LinkWithInheritance(IClass classA, IClass classB, string? label = default)
-        => AddRelation(classA, classB, "<|--", label);
-    public void LinkWithComposition(IClass classA, IClass classB, string? label = default)
-        => AddRelation(classA, classB, "*--", label);
-    public void LinkWithAggregation(IClass classA, IClass classB, string? label = default)
-        => AddRelation(classA, classB, "o--", label);
-    public void LinkWithAssociation(IClass classA, IClass classB, string? label = default)
-        => AddRelation(classA, classB, "<--", label);
-    public void LinkSolid(IClass classA, IClass classB, string? label = default)
-        => AddRelation(classA, classB, "--", label);
-    public void LinkDashed(IClass classA, IClass classB, string? label = default)
-        => AddRelation(classA, classB, "..", label);
-    public void LinkWithDependency(IClass classA, IClass classB, string? label = default)
-        => AddRelation(classA, classB, "<..", label);
-    public void LinkWithRealization(IClass classA, IClass classB, string? label = default)
-        => AddRelation(classA, classB, "<|..", label);
+    public void LinkWithInheritance(IClass from, IClass to, string? label = default)
+        => AddRelation(from, to, "--|>", label);
+    public void LinkWithComposition(IClass from, IClass to, string? label = default)
+        => AddRelation(from, to, "--*", label);
+    public void LinkWithAggregation(IClass from, IClass to, string? label = default)
+        => AddRelation(from, to, "--o", label);
+    public void LinkWithAssociation(IClass from, IClass to, string? label = default)
+        => AddRelation(from, to, "-->", label);
+    public void LinkSolid(IClass from, IClass to, string? label = default)
+        => AddRelation(from, to, "--", label);
+    public void LinkDashed(IClass from, IClass to, string? label = default)
+        => AddRelation(from, to, "..", label);
+    public void LinkWithDependency(IClass from, IClass to, string? label = default)
+        => AddRelation(from, to, "..>", label);
+    public void LinkWithRealization(IClass from, IClass to, string? label = default)
+        => AddRelation(from, to, "..|>", label);
 
     private bool RelationExist(string className) => relations.Keys.Any(r => r.Contains(className));
 
@@ -80,7 +80,6 @@ public class ClassDiagramGenerator
     }
     class ClassDescription : IClass
     {
-
         public bool IsEmpty { get; private set; } = true;
         private readonly System.Text.StringBuilder diagramBuilder;
         public ClassDescription(string name)
