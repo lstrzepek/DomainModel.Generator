@@ -17,7 +17,7 @@ public class ByTypeNodeConnectionStrategy : INodeConnectionStrategy
     public bool AreConnected(Node from, Node to)
     {
         //TODO: Solve potential problem with formatted attribute name vs type name
-        var isConnected = (Node a, Node b) => a.Attributes.Any(n => n.type == b.Name);
+        var isConnected = (Node a, Node b) => a.Attributes.Any(n => n.type == b.Name || n.type.Contains($"<{b.Name}>"));
         return isConnected(from, to);
     }
 }

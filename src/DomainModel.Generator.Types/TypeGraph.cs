@@ -11,14 +11,18 @@ public class Node
     public (string name, string type)[] Attributes => attributes.Select(a => (a.Key, a.Value)).ToArray();
     public Type Type { get; }
 
-    public void AddPublicAttribute(string name, Type type)
+    public void AddPublicAttribute(string name)
+    {
+        AddPublicAttribute(name, null);
+    }
+    public void AddPublicAttribute(string name, Type? type)
     {
         if (attributes.ContainsKey(name))
         {
-            attributes[name] = type.FormatTypeName();
+            attributes[name] = type != null ? type.FormatTypeName() : string.Empty;
             return;
         }
-        attributes.Add(name, type.FormatTypeName());
+        attributes.Add(name, type != null ? type.FormatTypeName() : string.Empty);
     }
 }
 

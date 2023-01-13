@@ -1,0 +1,25 @@
+classDiagram
+	class Sale
+	Sale : +List~Guid~ CustomerId
+
+	class Customer
+	Customer : +Guid Id
+	Customer : +Int32 Age
+	Customer : +List~ContactDetails~ Contacts
+	Customer : +Address BusinessAddress
+	Customer : +DateTime CreateDate
+	Customer : +CustomerType Type
+
+	class Address
+	Address : +String City
+	Address : +String Street
+
+	class CustomerType
+	<<enumeration>> CustomerType
+	CustomerType : +Individual
+	CustomerType : +Company
+
+Sale --> Customer
+Customer --> ContactDetails
+Customer --> Address
+Customer --> CustomerType

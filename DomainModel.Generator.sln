@@ -3,13 +3,17 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainModel.Generator.CLI", "DomainModel.Generator.CLI\DomainModel.Generator.CLI.csproj", "{B50FC0EA-051A-4327-9E1E-F9D0C78297A2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainModel.Generator.CLI", "src\DomainModel.Generator.CLI\DomainModel.Generator.CLI.csproj", "{B50FC0EA-051A-4327-9E1E-F9D0C78297A2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainModel.Generator.CLI.Tests", "DomainModel.Generator.CLI.Tests\DomainModel.Generator.CLI.Tests.csproj", "{125E9D34-1FB4-4FAC-BA8B-1BC9F38A413B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainModel.Generator.CLI.Tests", "src\DomainModel.Generator.CLI.Tests\DomainModel.Generator.CLI.Tests.csproj", "{125E9D34-1FB4-4FAC-BA8B-1BC9F38A413B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainModel.Generator.Mermaid", "DomainModel.Generator.Mermaid\DomainModel.Generator.Mermaid.csproj", "{4A69AFE1-67A8-4C2C-B70D-53F087B15A9F}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainModel.Generator.Mermaid", "src\DomainModel.Generator.Mermaid\DomainModel.Generator.Mermaid.csproj", "{4A69AFE1-67A8-4C2C-B70D-53F087B15A9F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainModel.Generator.Mermaid.Tests", "DomainModel.Generator.Mermaid.Tests\DomainModel.Generator.Mermaid.Tests.csproj", "{EB154889-947E-46DC-AAE3-3CE724D79340}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainModel.Generator.Mermaid.Tests", "src\DomainModel.Generator.Mermaid.Tests\DomainModel.Generator.Mermaid.Tests.csproj", "{EB154889-947E-46DC-AAE3-3CE724D79340}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainModel.Generator.Types", "src\DomainModel.Generator.Types\DomainModel.Generator.Types.csproj", "{6F892B30-FB71-4586-AD42-0280B834B733}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DomainModel.Generator.Types.Tests", "src\DomainModel.Generator.Types.Tests\DomainModel.Generator.Types.Tests.csproj", "{69E656CC-52B1-4CEA-BBE6-107C7881069B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -36,5 +40,13 @@ Global
 		{EB154889-947E-46DC-AAE3-3CE724D79340}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{EB154889-947E-46DC-AAE3-3CE724D79340}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{EB154889-947E-46DC-AAE3-3CE724D79340}.Release|Any CPU.Build.0 = Release|Any CPU
+		{6F892B30-FB71-4586-AD42-0280B834B733}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{6F892B30-FB71-4586-AD42-0280B834B733}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{6F892B30-FB71-4586-AD42-0280B834B733}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{6F892B30-FB71-4586-AD42-0280B834B733}.Release|Any CPU.Build.0 = Release|Any CPU
+		{69E656CC-52B1-4CEA-BBE6-107C7881069B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{69E656CC-52B1-4CEA-BBE6-107C7881069B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{69E656CC-52B1-4CEA-BBE6-107C7881069B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{69E656CC-52B1-4CEA-BBE6-107C7881069B}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal
