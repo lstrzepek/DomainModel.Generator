@@ -24,15 +24,15 @@ Options:
   --format=<f>                      Markdown format. Supported values: mermaid, markdown [default: mermaid].
   --diagram=<dt>                    Type of diagram to generate [default: class].
 ```
-
-  Example: 
-  ```
-  dotnet model generate -m ./MyCompany.AwesomeApp.Domain.dll -o ./AwesomeApp.mmd -n MyCompany.AwesomeApp.Domain
-  ```
   
 ## Installation
   
-  ```
-  dotnet tool install dotnet-model --global
+  ```sh
+  dotnet tool install DomainModel.Generator --global
   ```
   
+## Example 
+
+  ```sh
+  dotnet model generate -m ./DomainModel.Generator.CLI.Tests.dll -n TestModel --ignore-type TestModel.Program -o ~/Projects/DomainModel.Generate/model.mmd
+  ```

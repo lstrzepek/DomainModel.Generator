@@ -22,17 +22,27 @@ public class ModelReflector
             var node = new Node(type);
             try
             {
-                foreach (var property in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
+                if (type.IsEnum)
                 {
-                    try
+                    foreach (var enumName in type.GetEnumNames())
                     {
-                        node.AddPublicAttribute(property.Name, property.PropertyType);
+                        node.AddPublicAttribute(enumName);
                     }
-                    catch (FileNotFoundException ex)
+                }
+                else
+                {
+                    foreach (var property in type.GetProperties(System.Reflection.BindingFlags.Public | System.Reflection.BindingFlags.Instance))
                     {
-                        Console.Error.WriteLine($"Error when reflecting {type.Name}.{property.Name}.");
-                        PrintException(ex);
-                        node.AddPublicAttribute(property.Name, typeof(object));
+                        try
+                        {
+                            node.AddPublicAttribute(property.Name, property.PropertyType);
+                        }
+                        catch (FileNotFoundException ex)
+                        {
+                            Console.Error.WriteLine($"Error when reflecting {type.Name}.{property.Name}.");
+                            PrintException(ex);
+                            node.AddPublicAttribute(property.Name, typeof(object));
+                        }
                     }
                 }
                 graphBuilder.AddNode(node);

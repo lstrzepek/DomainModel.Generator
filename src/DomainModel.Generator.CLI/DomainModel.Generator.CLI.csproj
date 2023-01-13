@@ -2,6 +2,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DomainModel.Generator.Mermaid\DomainModel.Generator.Mermaid.csproj" />
+    <ProjectReference Include="..\DomainModel.Generator.Types\DomainModel.Generator.Types.csproj" />
   </ItemGroup>
 
   <ItemGroup>

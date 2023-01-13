@@ -1,6 +1,6 @@
 using System.Collections.Generic;
 
-namespace DomainModel.Generator.CLI.Tests;
+namespace DomainModel.Generator.Types.Tests;
 public class TypeGraphTest
 {
     [Fact]

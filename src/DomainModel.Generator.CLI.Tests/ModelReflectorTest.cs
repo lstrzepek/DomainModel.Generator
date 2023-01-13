@@ -46,6 +46,8 @@ public class ModelReflectorTest
         var sut = CreateSut();
         var graph = sut.ReflectTypes(types: new[] { typeof(PublicEnum) });
         graph.Nodes.Length.Should().Be(1);
+        graph.TryGetNodeFor(typeof(PublicEnum), out var node).Should().BeTrue();
+        node!.Attributes.Length.Should().Be(3);
     }
 
     [Fact]

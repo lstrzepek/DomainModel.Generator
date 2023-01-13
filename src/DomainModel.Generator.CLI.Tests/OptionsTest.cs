@@ -101,7 +101,7 @@ public class OptionsTest
         var sut = CreateSut(includeNamespaces: new[] { "TestModel.Domain" }, excludeTypes: new[] { "TestModel.Domain.Customers.Customer" });
         sut.ShouldReflect(typeof(TestModel.Domain.Customers.Customer)).Should().Be(false);
     }
-    
+
     [Fact]
     public void WhenExcludeNamespaceMatchButIncludeNamespaceNot_ShouldNotReflect()
     {
