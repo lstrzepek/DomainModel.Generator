@@ -4,6 +4,8 @@
 
 Domain model is a tool to analyze your model (.Net dll) and generate up to date diagram which can be embedded into your documentation.
 
+> You can run it as a part of your build or release pipeline to generate always up to date diagram and attach it to your documentation.
+
 ```
 Domain model it a tool to analyze your model and generate upd to date diagram which can be embedded into your documentation.
 
@@ -28,11 +30,55 @@ Options:
 ## Installation
   
   ```sh
-  dotnet tool install DomainModel.Generator --global
+  $ dotnet tool install DomainModel.Generator --global
   ```
   
 ## Example 
+First you need to build your model, or publish it to have all your external dependencies in same directory. Program will look for dotnet dependencies in `RuntimeEnvironment.GetRuntimeDirectory()`.
+```sh
+$ dotnet build
+```
+You can find my test model in [src/DomainModel.Generator.CLI.Tests/TestModel/Model.cs](https://github.com/lstrzepek/DomainModel.Generator/blob/main/src/DomainModel.Generator.CLI.Tests/TestModel/Model.cs)
+
+My model is placed in `DomainModel.Generator.CLI.Tests.dll` but I do not want to have all types in my diagram so I will only choose `TestModel` namespace using -n param. I also do not want to have `Program` type from this namespace so I will exclude only this type using `--ignore-type`.
 
   ```sh
-  dotnet model generate -m ./DomainModel.Generator.CLI.Tests.dll -n TestModel --ignore-type TestModel.Program -o ~/Projects/DomainModel.Generate/model.mmd
+  $ dotnet model generate -m ./DomainModel.Generator.CLI.Tests.dll -n TestModel --ignore-type TestModel.Program -o ~/Projects/DomainModel.Generate/model.mmd
   ```
+  
+  > Because marmaid format is a markdown you can easly find out what was changes using git diff
+  
+Output:
+  
+  ```mermaid
+  %%{init: {'theme':'forest'}}%%
+  classDiagram
+	class Sale
+	Sale : +List~Guid~ CustomerId
+
+	class Customer
+	Customer : +Guid Id
+	Customer : +Int32 Age
+	Customer : +List~ContactDetails~ Contacts
+	Customer : +Address BusinessAddress
+	Customer : +DateTime CreateDate
+	Customer : +CustomerType Type
+
+	class Address
+	Address : +String City
+	Address : +String Street
+
+	class CustomerType
+	<<enumeration>> CustomerType
+	CustomerType : +Individual
+	CustomerType : +Company
+
+Sale --> Customer
+Customer --> ContactDetails
+Customer --> Address
+Customer --> CustomerType
+  ```
+  
+  > Majority of remote repositories like GitHub and GitLab directly support display of marmaid markdown.
+
+ 
