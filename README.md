@@ -60,19 +60,19 @@ Customer --> CustomerType
   
   ## Usage
 ```
-  model generate [--diagram=<dt>] (-m=<md> | --module=<md>) (-o=<out> | --output=<out>) [--format=<f>] [-n=<ns>... | --namespace=<ns>...] [--ignore-namespace=<ign>...] [-t=<type>... | --type=<type>...] [--ignore-type=<igt>...]
+  model generate [--diagram <dt>] (-m <md> | --module <md>) (-o <out> | --output <out>) [--format <f>] [-n <ns>... | --namespace <ns>...] [--ignore-namespace <ign>...] [-t <type>... | --type <type>...] [--ignore-type <igt>...]
   model -h | --help
   model --version
 
 Options:
   -h --help                         Show this screen.
   --version                         Show version.
-  -m=<md> --module=<md>             **Required** Module where to look for types (eg: MyCompany.Domain.dll).
-  -n=<ns>... --namespace=<ns>...    Only types in provided namespaces will be visible on diagram as objects.
-  -t=<type>... --type=<type>...   Types to include even if not defined in provided namespaces.
-  --ignore-namespace=<ign>...       Namespaces to ignore.
-  --ignore-type=<igt>               Type to ignore.
-  -o=<out> --output=<out>           **Required** File where to put markdown with diagram (will be overridden!).
-  --format=<f>                      Markdown format. Supported values: mermaid, markdown [default: mermaid].
-  --diagram=<dt>                    Type of diagram to generate [default: class].
+  -m <md> --module <md>             **Required** Module where to look for types (eg: MyCompany.Domain.dll).
+  -n <ns>... --namespace <ns>...    Only types in provided namespaces will be visible on diagram as objects.
+  -t <type>... --type <type>...   Types to include even if not defined in provided namespaces.
+  --ignore-namespace <ign>...       Namespaces to ignore.
+  --ignore-type <igt>               Type to ignore.
+  -o <out> --output <out>           **Required** File where to put markdown with diagram (will be overridden!).
+  --format <f>                      Markdown format. Supported values: mermaid, markdown [default: mermaid].
+  --diagram <dt>                    Type of diagram to generate [default: class].
 ```
